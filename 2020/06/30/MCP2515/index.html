@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang=tr>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="MCP2515 Nedir?MCP2515, kısaca SPI üzerinden MCU’dan aldığı komutlar doğrultusunda CANbus hattıyla iletişim kuran bir entegredir. Yani kendileri içinde CANbus modulu bulundurmayan MCU’ları CANbus hattı">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MCP2515 SPI - CANbus entegresi">
+<meta property="og:url" content="https://omeroztrk.github.io/2020/06/30/MCP2515/index.html">
+<meta property="og:site_name" content="Ömer&#39;in blogu">
+<meta property="og:description" content="MCP2515 Nedir?MCP2515, kısaca SPI üzerinden MCU’dan aldığı komutlar doğrultusunda CANbus hattıyla iletişim kuran bir entegredir. Yani kendileri içinde CANbus modulu bulundurmayan MCU’ları CANbus hattı">
+<meta property="og:locale" content="tr_TR">
+<meta property="article:published_time" content="2020-06-30T09:07:44.000Z">
+<meta property="article:modified_time" content="2020-06-30T11:59:14.000Z">
+<meta property="article:author" content="Ömer Said Öztürk">
+<meta property="article:tag" content="Can">
+<meta property="article:tag" content="CANbus">
+<meta property="article:tag" content="MCP2515">
+<meta property="article:tag" content="SPI">
+<meta property="article:tag" content="Entegre">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>MCP2515 SPI - CANbus entegresi</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Ana Sayfa</a></li>
+         
+          <li><a href="/About/">Hakkımda</a></li>
+         
+          <li><a href="/archives/">Yazılar</a></li>
+         
+          <li><a href="https://github.com/omeroztrk/" target="_blank" rel="noopener">Projeler</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/04/27/C-ye-Giris/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Önceki gönderi</span>
+      <span id="i-next" class="info" style="display:none;">Sonraki gönderi</span>
+      <span id="i-top" class="info" style="display:none;">Başa dön</span>
+      <span id="i-share" class="info" style="display:none;">Gönderiyi paylaş</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://omeroztrk.github.io/2020/06/30/MCP2515/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&text=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&is_video=false&description=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MCP2515 SPI - CANbus entegresi&body=Check out this article: https://omeroztrk.github.io/2020/06/30/MCP2515/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&name=MCP2515 SPI - CANbus entegresi&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://omeroztrk.github.io/2020/06/30/MCP2515/&t=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515-Nedir"><span class="toc-number">1.</span> <span class="toc-text">MCP2515 Nedir?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#On-Gereklilikler"><span class="toc-number">2.</span> <span class="toc-text">Ön Gereklilikler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515’in-nasil-bir-kullanimi-vardir"><span class="toc-number">3.</span> <span class="toc-text">MCP2515’in nasıl bir kullanımı vardır?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Asama-1-Temel-kullanim"><span class="toc-number"></span> <span class="toc-text">Aşama 1 - Temel kullanım</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515-in-modlari"><span class="toc-number">1.</span> <span class="toc-text">MCP2515 in modları</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration-Mode-0b100"><span class="toc-number">1.1.</span> <span class="toc-text">Configuration Mode (0b100*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Normal-Mode-0b000"><span class="toc-number">1.2.</span> <span class="toc-text">Normal Mode (0b000*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loopback-Mode-0b010"><span class="toc-number">1.3.</span> <span class="toc-text">Loopback Mode(0b010*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listen-only-Mode-0b011"><span class="toc-number">1.4.</span> <span class="toc-text">Listen-only Mode(0b011*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sleep-Mode-0b001"><span class="toc-number">1.5.</span> <span class="toc-text">Sleep Mode(0b001*****)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SPI-arayuzunun-kullanimi"><span class="toc-number">2.</span> <span class="toc-text">SPI arayüzünün kullanımı</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reset"><span class="toc-number">2.1.</span> <span class="toc-text">Reset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read"><span class="toc-number">2.2.</span> <span class="toc-text">Read</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        MCP2515 SPI - CANbus entegresi
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Ömer'in blogu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-06-30T09:07:44.000Z" itemprop="datePublished">2020-06-30</time>
+        
+        (Updated: <time datetime="2020-06-30T11:59:14.000Z" itemprop="dateModified">2020-06-30</time>)
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/CANbus/" rel="tag">CANbus</a>, <a class="tag-link" href="/tags/Can/" rel="tag">Can</a>, <a class="tag-link" href="/tags/Entegre/" rel="tag">Entegre</a>, <a class="tag-link" href="/tags/MCP2515/" rel="tag">MCP2515</a>, <a class="tag-link" href="/tags/SPI/" rel="tag">SPI</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="MCP2515-Nedir"><a href="#MCP2515-Nedir" class="headerlink" title="MCP2515 Nedir?"></a>MCP2515 Nedir?</h2><p>MCP2515, kısaca SPI üzerinden MCU’dan aldığı komutlar doğrultusunda CANbus hattıyla iletişim kuran bir entegredir. Yani kendileri içinde CANbus modulu bulundurmayan MCU’ları CANbus hattı ile bağlamakta kullanılır.</p>
+<p><strong>Not:</strong> CANbus hattında CAN-H ve CAN-L denen 2 hat vardır. MCP2515 ise CAN-RX ve CAN-TX çıktısı verir. Bu yüzden MCP2515’ten sonra CAN Transceiver denen entegreler kullanmamız gerekir. Bu entegreler CAN-RX ve CAN-TX i CAN-H ve CAN-L a dönüştürür. Bu entegrelere MCP2551 veya TJA1050 örnek gösterilebilir.</p>
+<h2 id="On-Gereklilikler"><a href="#On-Gereklilikler" class="headerlink" title="Ön Gereklilikler"></a>Ön Gereklilikler</h2><p>Bu yazıya başlamadan önce CANbus hakkında temel bir bilgiye sahip olmanız gerekiyor. Gerekli bilgileri <a href="http://www.barissamanci.net/Makale/15/can-bus-nedir-can-protokolu-incelemesi/" target="_blank" rel="noopener">http://www.barissamanci.net/Makale/15/can-bus-nedir-can-protokolu-incelemesi/</a> yazısından edinebilirsiniz.</p>
+<h2 id="MCP2515’in-nasil-bir-kullanimi-vardir"><a href="#MCP2515’in-nasil-bir-kullanimi-vardir" class="headerlink" title="MCP2515’in nasıl bir kullanımı vardır?"></a>MCP2515’in nasıl bir kullanımı vardır?</h2><p>MCP2515’in de kendi içinde MCU’larda olduğu gibi çeşitli bufferları vardır. Bu bufferların SPI arayüzü ile doldurulması ve “Gönder” gibi komutların verilmesi ile CANbus hattı ile iletişim sağlanır</p>
+<p>Bu yazıda MCP2515’i 2 aşamada inceleyeceğiz.</p>
+<ol>
+<li>aşamada amacımız ayrıntılara girmeden hatta veri basmak ve hattan veri okumak olacak.</li>
+<li>aşamada amacımız ayrıntılara girmek ve daha geniş bir kütüphane yazmak olacak.</li>
+</ol>
+<h1 id="Asama-1-Temel-kullanim"><a href="#Asama-1-Temel-kullanim" class="headerlink" title="Aşama 1 - Temel kullanım"></a>Aşama 1 - Temel kullanım</h1><h2 id="MCP2515-in-modlari"><a href="#MCP2515-in-modlari" class="headerlink" title="MCP2515 in modları"></a>MCP2515 in modları</h2><p>MCP2515’in 5 tane çalışma modu vardır:<br>1- Configuration<br>2- Normal<br>3- Loopback<br>4- Listen-only<br>5- Sleep</p>
+<p>Bu modlar CANCTRL[7:5] bitlerinin değiştirilmesi ile manuel olarak ayarlanabilir.</p>
+<h3 id="Configuration-Mode-0b100"><a href="#Configuration-Mode-0b100" class="headerlink" title="Configuration Mode (0b100*****)"></a>Configuration Mode (0b100*****)</h3><p>MCP2515 açıldığında otomatik olarak bu moda girilir. Veya CANCTRL registerının ilk 3 biti 100’e ayarlanarak da manuel olarak bu moda girilebilir.<br>Bu modda(ve sadece bu modda)</p>
+<ol>
+<li>CNF[1:3] registerları: Quanta süresi, Sync - Tsreg1-2 uzunluğu vs.</li>
+<li>TXRTSCTRL registerı: TXnRTS pinlerinin konfigrasyonu (RTS komutu mu verecek yoksa başka amaçla mı kullanılacak (başlangıçta bu registerla uğraşmaya gerek yok) )</li>
+<li>Filter ve Mask registerları (yine başlangıçta ilgilenmeyeceğiz)</li>
+</ol>
+<p>ayarlanır.</p>
+<p>başlangıç içim önerilen değerler:</p>
+<table>
+<thead>
+<tr>
+<th>register</th>
+<th>değer</th>
+<th>ne yaptık</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CNF1(0x24)</td>
+<td>0x00</td>
+<td>Tq = 2/Fosc, Tsync = 1xTq</td>
+</tr>
+<tr>
+<td>CNF2(0x29)</td>
+<td>0xF0</td>
+<td>PS1 ve PS2 ayarlamaları</td>
+</tr>
+<tr>
+<td>CNF3(0x28)</td>
+<td>0x86</td>
+<td>PS2 uzunluğu, CLKOUT = SOF</td>
+</tr>
+</tbody></table>
+<p>Diğer registerlara dokunmaya gerek yok.</p>
+<h3 id="Normal-Mode-0b000"><a href="#Normal-Mode-0b000" class="headerlink" title="Normal Mode (0b000*****)"></a>Normal Mode (0b000*****)</h3><p>MCP2515’in CANbus hattı ile konuştuğu moddur</p>
+<h3 id="Loopback-Mode-0b010"><a href="#Loopback-Mode-0b010" class="headerlink" title="Loopback Mode(0b010*****)"></a>Loopback Mode(0b010*****)</h3><p>MCP2515’in CANbus hattı ile konuşuyormuş gibi davrandığı ancak veriyi kendi içinde döndürdüğü  moddur. Geliştirme açamasında kullanlır</p>
+<h3 id="Listen-only-Mode-0b011"><a href="#Listen-only-Mode-0b011" class="headerlink" title="Listen-only Mode(0b011*****)"></a>Listen-only Mode(0b011*****)</h3><p>MCP2515’in CANbus hattını dinlediği ancak hatta veri yazmadığı moddur</p>
+<h3 id="Sleep-Mode-0b001"><a href="#Sleep-Mode-0b001" class="headerlink" title="Sleep Mode(0b001*****)"></a>Sleep Mode(0b001*****)</h3><p>MCP2515’in kullanılmaması durumunda enerji tasarrufu için geçtiği moddur. Manuel olarak da bu moda geçiş yapılabilir.</p>
+<h2 id="SPI-arayuzunun-kullanimi"><a href="#SPI-arayuzunun-kullanimi" class="headerlink" title="SPI arayüzünün kullanımı"></a>SPI arayüzünün kullanımı</h2><p>Registerları tanımadan önce bu registerları nasıl yazarız ve bilimum diğer işlemleri nasıl yaparız ona bakalım.</p>
+<p>SPI arayüzü için tanımlanmış temel komutlar şunlardır:</p>
+<ul>
+<li>reset</li>
+<li>read</li>
+<li>read rx buffer</li>
+<li>write</li>
+<li>load tx buffer</li>
+<li>rts</li>
+<li>read status</li>
+<li>rx status</li>
+<li>bit modify</li>
+</ul>
+<p>şimdi bu komutları tanıyalım</p>
+<p><strong>Not:</strong> bu komutların her biri SPI hattındaki SS(Slave Select) pininin 0 yapılması ile verilir. Komut bittikten sonra SS 1 yapılmalıdır. SS 0 yapıldıktan sonra 1 yapılmadan önce art arda 2 komut verilemez.<br>yani : Seç(SS-0) –&gt; komutu ver –&gt; Bırak(SS-1)</p>
+<p>Datasheet in <a href="MCP2515_68-71.pdf" target="blank">68-71 sayfalarının</a> incelenmesi ile bu komutların kullannımı daha iyi anlaşılabilir.</p>
+<iframe src="MCP2515_68-71.pdf" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
+<h3 id="Reset"><a href="#Reset" class="headerlink" title="Reset"></a>Reset</h3><p>MCP2515 güçten kesilmiş yeniden bağlanmış gibi her şeyi sıfılar. Otomatik olarak Config moda girilir.<br>Reset komutunu vermek için SPI hattından 0xC0 gönderilir yani</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mcp_reset</span><span class="params">()</span> <span class="comment">// RESET</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  SELECT <span class="comment">//ss = 0</span></span><br><span class="line">  spi_sendbyte(<span class="number">0xC0</span>);</span><br><span class="line">  UNSELECT <span class="comment">// ss = 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Read"><a href="#Read" class="headerlink" title="Read"></a>Read</h3><p>İstenilen bir buffer’ın içeriğinin okunmasında kullanlır.<br>Read komutunu vermek için SPI hattından 0x03 gönderilir.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">byte</span> <span class="title">mcp_readRegister</span><span class="params">(<span class="keyword">byte</span> address)</span> <span class="comment">//READ</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  SELECT</span><br><span class="line">  spi_sendbyte(<span class="number">0x03</span>);</span><br><span class="line">  spi_sendbyte(address);</span><br><span class="line">  <span class="keyword">byte</span> data =  spi_sendbyte(<span class="number">0x00</span>);</span><br><span class="line">  UNSELECT</span><br><span class="line">  <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Ana Sayfa</a></li>
+         
+          <li><a href="/About/">Hakkımda</a></li>
+         
+          <li><a href="/archives/">Yazılar</a></li>
+         
+          <li><a href="https://github.com/omeroztrk/" target="_blank" rel="noopener">Projeler</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515-Nedir"><span class="toc-number">1.</span> <span class="toc-text">MCP2515 Nedir?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#On-Gereklilikler"><span class="toc-number">2.</span> <span class="toc-text">Ön Gereklilikler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515’in-nasil-bir-kullanimi-vardir"><span class="toc-number">3.</span> <span class="toc-text">MCP2515’in nasıl bir kullanımı vardır?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Asama-1-Temel-kullanim"><span class="toc-number"></span> <span class="toc-text">Aşama 1 - Temel kullanım</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP2515-in-modlari"><span class="toc-number">1.</span> <span class="toc-text">MCP2515 in modları</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration-Mode-0b100"><span class="toc-number">1.1.</span> <span class="toc-text">Configuration Mode (0b100*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Normal-Mode-0b000"><span class="toc-number">1.2.</span> <span class="toc-text">Normal Mode (0b000*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loopback-Mode-0b010"><span class="toc-number">1.3.</span> <span class="toc-text">Loopback Mode(0b010*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listen-only-Mode-0b011"><span class="toc-number">1.4.</span> <span class="toc-text">Listen-only Mode(0b011*****)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sleep-Mode-0b001"><span class="toc-number">1.5.</span> <span class="toc-text">Sleep Mode(0b001*****)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SPI-arayuzunun-kullanimi"><span class="toc-number">2.</span> <span class="toc-text">SPI arayüzünün kullanımı</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reset"><span class="toc-number">2.1.</span> <span class="toc-text">Reset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read"><span class="toc-number">2.2.</span> <span class="toc-text">Read</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://omeroztrk.github.io/2020/06/30/MCP2515/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&text=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&is_video=false&description=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MCP2515 SPI - CANbus entegresi&body=Check out this article: https://omeroztrk.github.io/2020/06/30/MCP2515/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&title=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://omeroztrk.github.io/2020/06/30/MCP2515/&name=MCP2515 SPI - CANbus entegresi&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://omeroztrk.github.io/2020/06/30/MCP2515/&t=MCP2515 SPI - CANbus entegresi" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menü</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> İçindekiler</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Paylaş</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Başa dön</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Tüm Hakları Saklıdır &copy;
+    
+    
+    2020
+    Ömer Said Öztürk
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Ana Sayfa</a></li>
+         
+          <li><a href="/About/">Hakkımda</a></li>
+         
+          <li><a href="/archives/">Yazılar</a></li>
+         
+          <li><a href="https://github.com/omeroztrk/" target="_blank" rel="noopener">Projeler</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-165940151-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
