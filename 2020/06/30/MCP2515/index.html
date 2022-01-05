@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Ömer Said Öztürk">
+
+
+
+
+
+<title>MCP2515 SPI - CANbus entegresi | Ömer&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Ömer&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/projects">Projects</a>
+                
+                    <a class="menu-item" href="/portfolio">Portfolio</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Ömer&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/projects">Projects</a>
+                
+                    <a class="menu-item" href="/portfolio">Portfolio</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">MCP2515 SPI - CANbus entegresi</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Ömer Said Öztürk</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 30, 2020&nbsp;&nbsp;12:07:44</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="MCP2515-Nedir"><a href="#MCP2515-Nedir" class="headerlink" title="MCP2515 Nedir?"></a>MCP2515 Nedir?</h2><p>MCP2515, kısaca SPI üzerinden MCU’dan aldığı komutlar doğrultusunda CANbus hattıyla iletişim kuran bir entegredir. Yani kendileri içinde CANbus modulu bulundurmayan MCU’ları CANbus hattı ile bağlamakta kullanılır.</p>
+<p><strong>Not:</strong> CANbus hattında CAN-H ve CAN-L denen 2 hat vardır. MCP2515 ise CAN-RX ve CAN-TX çıktısı verir. Bu yüzden MCP2515’ten sonra CAN Transceiver denen entegreler kullanmamız gerekir. Bu entegreler CAN-RX ve CAN-TX i CAN-H ve CAN-L a dönüştürür. Bu entegrelere MCP2551 veya TJA1050 örnek gösterilebilir.</p>
+<h2 id="On-Gereklilikler"><a href="#On-Gereklilikler" class="headerlink" title="Ön Gereklilikler"></a>Ön Gereklilikler</h2><p>Bu yazıya başlamadan önce CANbus hakkında temel bir bilgiye sahip olmanız gerekiyor. Gerekli bilgileri <a target="_blank" rel="noopener" href="http://www.barissamanci.net/Makale/15/can-bus-nedir-can-protokolu-incelemesi/">http://www.barissamanci.net/Makale/15/can-bus-nedir-can-protokolu-incelemesi/</a> yazısından edinebilirsiniz.</p>
+<h2 id="MCP2515’in-nasil-bir-kullanimi-vardir"><a href="#MCP2515’in-nasil-bir-kullanimi-vardir" class="headerlink" title="MCP2515’in nasıl bir kullanımı vardır?"></a>MCP2515’in nasıl bir kullanımı vardır?</h2><p>MCP2515’in de kendi içinde MCU’larda olduğu gibi çeşitli bufferları vardır. Bu bufferların SPI arayüzü ile doldurulması ve “Gönder” gibi komutların verilmesi ile CANbus hattı ile iletişim sağlanır</p>
+<p>Bu yazıda MCP2515’i 2 aşamada inceleyeceğiz.</p>
+<ol>
+<li>aşamada amacımız ayrıntılara girmeden hatta veri basmak ve hattan veri okumak olacak.</li>
+<li>aşamada amacımız ayrıntılara girmek ve daha geniş bir kütüphane yazmak olacak.</li>
+</ol>
+<h1 id="Asama-1-Temel-kullanim"><a href="#Asama-1-Temel-kullanim" class="headerlink" title="Aşama 1 - Temel kullanım"></a>Aşama 1 - Temel kullanım</h1><h2 id="MCP2515-in-modlari"><a href="#MCP2515-in-modlari" class="headerlink" title="MCP2515 in modları"></a>MCP2515 in modları</h2><p>MCP2515’in 5 tane çalışma modu vardır:<br>1- Configuration<br>2- Normal<br>3- Loopback<br>4- Listen-only<br>5- Sleep</p>
+<p>Bu modlar CANCTRL[7:5] bitlerinin değiştirilmesi ile manuel olarak ayarlanabilir.</p>
+<h3 id="Configuration-Mode-0b100"><a href="#Configuration-Mode-0b100" class="headerlink" title="Configuration Mode (0b100*****)"></a>Configuration Mode (0b100*****)</h3><p>MCP2515 açıldığında otomatik olarak bu moda girilir. Veya CANCTRL registerının ilk 3 biti 100’e ayarlanarak da manuel olarak bu moda girilebilir.<br>Bu modda(ve sadece bu modda)</p>
+<ol>
+<li>CNF[1:3] registerları: Quanta süresi, Sync - Tsreg1-2 uzunluğu vs.</li>
+<li>TXRTSCTRL registerı: TXnRTS pinlerinin konfigrasyonu (RTS komutu mu verecek yoksa başka amaçla mı kullanılacak (başlangıçta bu registerla uğraşmaya gerek yok) )</li>
+<li>Filter ve Mask registerları (yine başlangıçta ilgilenmeyeceğiz)</li>
+</ol>
+<p>ayarlanır.</p>
+<p>başlangıç içim önerilen değerler:</p>
+<table>
+<thead>
+<tr>
+<th>register</th>
+<th>değer</th>
+<th>ne yaptık</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CNF1(0x24)</td>
+<td>0x00</td>
+<td>Tq = 2/Fosc, Tsync = 1xTq</td>
+</tr>
+<tr>
+<td>CNF2(0x29)</td>
+<td>0xF0</td>
+<td>PS1 ve PS2 ayarlamaları</td>
+</tr>
+<tr>
+<td>CNF3(0x28)</td>
+<td>0x86</td>
+<td>PS2 uzunluğu, CLKOUT = SOF</td>
+</tr>
+</tbody></table>
+<p>Diğer registerlara dokunmaya gerek yok.</p>
+<h3 id="Normal-Mode-0b000"><a href="#Normal-Mode-0b000" class="headerlink" title="Normal Mode (0b000*****)"></a>Normal Mode (0b000*****)</h3><p>MCP2515’in CANbus hattı ile konuştuğu moddur</p>
+<h3 id="Loopback-Mode-0b010"><a href="#Loopback-Mode-0b010" class="headerlink" title="Loopback Mode(0b010*****)"></a>Loopback Mode(0b010*****)</h3><p>MCP2515’in CANbus hattı ile konuşuyormuş gibi davrandığı ancak veriyi kendi içinde döndürdüğü  moddur. Geliştirme açamasında kullanlır</p>
+<h3 id="Listen-only-Mode-0b011"><a href="#Listen-only-Mode-0b011" class="headerlink" title="Listen-only Mode(0b011*****)"></a>Listen-only Mode(0b011*****)</h3><p>MCP2515’in CANbus hattını dinlediği ancak hatta veri yazmadığı moddur</p>
+<h3 id="Sleep-Mode-0b001"><a href="#Sleep-Mode-0b001" class="headerlink" title="Sleep Mode(0b001*****)"></a>Sleep Mode(0b001*****)</h3><p>MCP2515’in kullanılmaması durumunda enerji tasarrufu için geçtiği moddur. Manuel olarak da bu moda geçiş yapılabilir.</p>
+<h2 id="SPI-arayuzunun-kullanimi"><a href="#SPI-arayuzunun-kullanimi" class="headerlink" title="SPI arayüzünün kullanımı"></a>SPI arayüzünün kullanımı</h2><p>Registerları tanımadan önce bu registerları nasıl yazarız ve bilimum diğer işlemleri nasıl yaparız ona bakalım.</p>
+<p>SPI arayüzü için tanımlanmış temel komutlar şunlardır:</p>
+<ul>
+<li>  reset</li>
+<li>  read</li>
+<li>  read rx buffer</li>
+<li>  write</li>
+<li>  load tx buffer</li>
+<li>  rts</li>
+<li>  read status</li>
+<li>  rx status</li>
+<li>  bit modify</li>
+</ul>
+<p>şimdi bu komutları tanıyalım</p>
+<p><strong>Not:</strong> bu komutların her biri SPI hattındaki SS(Slave Select) pininin 0 yapılması ile verilir. Komut bittikten sonra SS 1 yapılmalıdır. SS 0 yapıldıktan sonra 1 yapılmadan önce art arda 2 komut verilemez.<br>yani : Seç(SS-0) –&gt; komutu ver –&gt; Bırak(SS-1)</p>
+<p>Datasheet in <a href="MCP2515_68-71.pdf" target="blank">68-71 sayfalarının</a> incelenmesi ile bu komutların kullannımı daha iyi anlaşılabilir.</p>
+<iframe src="MCP2515_68-71.pdf" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
+<h3 id="Reset"><a href="#Reset" class="headerlink" title="Reset"></a>Reset</h3><p>MCP2515 güçten kesilmiş yeniden bağlanmış gibi her şeyi sıfılar. Otomatik olarak Config moda girilir.<br>Reset komutunu vermek için SPI hattından 0xC0 gönderilir yani</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mcp_reset</span><span class="params">()</span> <span class="comment">// RESET</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  SELECT <span class="comment">//ss = 0</span></span><br><span class="line">  spi_sendbyte(<span class="number">0xC0</span>);</span><br><span class="line">  UNSELECT <span class="comment">// ss = 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Read"><a href="#Read" class="headerlink" title="Read"></a>Read</h3><p>İstenilen bir buffer’ın içeriğinin okunmasında kullanlır.<br>Read komutunu vermek için SPI hattından 0x03 gönderilir.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">byte <span class="title">mcp_readRegister</span><span class="params">(byte address)</span> <span class="comment">//READ</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="function">SELECT</span></span><br><span class="line"><span class="function">  <span class="title">spi_sendbyte</span><span class="params">(<span class="number">0x03</span>)</span></span>;</span><br><span class="line">  spi_sendbyte(address);</span><br><span class="line">  byte data =  spi_sendbyte(<span class="number">0x00</span>);</span><br><span class="line">  UNSELECT</span><br><span class="line">  <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Devam-edecek"><a href="#Devam-edecek" class="headerlink" title="Devam edecek"></a>Devam edecek</h2>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Can/"># Can</a>
+                    
+                        <a href="/tags/CANbus/"># CANbus</a>
+                    
+                        <a href="/tags/MCP2515/"># MCP2515</a>
+                    
+                        <a href="/tags/SPI/"># SPI</a>
+                    
+                        <a href="/tags/Entegre/"># Entegre</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/04/27/C-ye-Giris/">C'ye Giriş</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Ömer Said Öztürk &middot; 2022 </span>
+    </div>
+</footer>
+    </div>
+</body>
+
+</html>
